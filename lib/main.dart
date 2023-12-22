@@ -6,3 +6,5 @@ void main() {
   runApp(const ProviderScope(child: BarbershopApp()));
 }
 
+//Informações importantes para a prímeira aula
+//https://gist.github.com/rodrigorahman/22a7d055bded90c6d9bdedb594d2b8fb
