@@ -1,16 +1,18 @@
 import 'package:dw_barbershop/src/core/ui/helpers/form_helper.dart';
 import 'package:dw_barbershop/src/core/ui/widgets/constants.dart';
+import 'package:dw_barbershop/src/features/auth/login/login_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:validatorless/validatorless.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final emailEC = TextEditingController();
   final passwordEC = TextEditingController();
@@ -29,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginVm(:login) = ref.watch(loginVmProvider.notifier);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Form(
@@ -117,7 +121,15 @@ class _LoginPageState extends State<LoginPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(56)),
-                            onPressed: () {},
+                            onPressed: () {
+                              switch (formKey.currentState?.validate()) {
+                                case (false || null):
+                                  //Mostra uma menssagem de erro campos inválidos.
+                                  break;
+                                case true:
+                                  login(emailEC.text, passwordEC.text);
+                              }
+                            },
                             child: const Text('ACESSAR'),
                           )
                         ],
